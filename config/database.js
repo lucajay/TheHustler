@@ -1,4 +1,4 @@
 module.exports = {
-  'secret': 'devdacticIsAwesome',
+  'secret': 'This is secret',
   'database': 'mongodb://localhost/hustlerDB'
 };

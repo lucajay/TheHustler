@@ -8,6 +8,7 @@ var config      = require('./config/database');
 var User        = require('./app/models/user');
 var port        = process.env.PORT || 8080;
 var jwt         = require('jwt-simple');
+var logout 		= require('express-passport-logout')
  
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -69,6 +70,7 @@ apiRoutes.get('/memberinfo', passport.authenticate('jwt', { session: false}), fu
   var token = getToken(req.headers);
   if (token) {
     var decoded = jwt.decode(token, config.secret);
+    console.log(config.secret)
     User.findOne({
       email: decoded.email
     }, function(err, user) {
@@ -76,7 +78,7 @@ apiRoutes.get('/memberinfo', passport.authenticate('jwt', { session: false}), fu
         if (!user) {
           return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
         } else {
-          res.json({success: true, msg: 'You are Successfully loggedIn ' + user.name + '!!'});
+          res.json({success: true, msg: 'You are Successfully loggedIn ' + user.full_name + '!!'});
         }
     });
   } else {
@@ -156,6 +158,7 @@ apiRoutes.put('/updateUser', function(req, res){
     }
   });
 });
+apiRoutes.get('/logout', logout())
  
 getToken = function (headers) {
   if (headers && headers.authorization) {
