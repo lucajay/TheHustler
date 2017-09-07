@@ -79,6 +79,7 @@ apiRoutes.get('/memberinfo', passport.authenticate('jwt', { session: false}), fu
           return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
         } else {
           res.json({success: true, msg: 'You are Successfully loggedIn ' + user.full_name + '!!'});
+
         }
     });
   } else {
